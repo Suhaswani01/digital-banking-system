@@ -24,13 +24,23 @@ public class JwtUtil {
     }
 
     
-    public String generateToken(String email) {
+    public String generateToken(String email, Long userId, String role) {
         return Jwts.builder()
                 .subject(email)
+                .claim("userId", userId)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
    
