@@ -20,6 +20,21 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
+    @ExceptionHandler(AccountNotActiveException.class)
+    public ResponseEntity<ErrorResponse> handleNotActive(AccountNotActiveException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(InvalidTransactionException.class)
+    public ResponseEntity<ErrorResponse> handleInvalid(InvalidTransactionException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficient(InsufficientBalanceException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.FORBIDDEN, "You do not have permission to access this resource", request);
@@ -46,9 +61,5 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         return new ResponseEntity<>(error, status);
-    }
-    @ExceptionHandler(InsufficientBalanceException.class)
-    public ResponseEntity<ErrorResponse> handleInsufficientBalance(InsufficientBalanceException ex, HttpServletRequest request) {
-        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 }
